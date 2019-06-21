@@ -23,52 +23,52 @@ public class Magic {
 
 	// Output methods
 	public static void print(String output){
-        strictCheck();
+		strictCheck();
 		System.out.print(output);
 	}
 
 	public static void print(int output){
-        strictCheck();
+		strictCheck();
 		System.out.print(output);
 	}
 
 	public static void print(boolean output){
-        strictCheck();
+		strictCheck();
 		System.out.print(output);
 	}
 
 	public static void print(double output){
-        strictCheck();
+		strictCheck();
 		System.out.print(output);
 	}
 
 	public static void print(char output){
-        strictCheck();
+		strictCheck();
 		System.out.print(output);
 	}
 
 	public static void println(String output){
-        strictCheck();
-        System.out.println(output);
+		strictCheck();
+		System.out.println(output);
 	}
 
 	public static void println(double output){
-        strictCheck();
+		strictCheck();
 		System.out.println(output);
 	}
 
 	public static void println(int output){
-        strictCheck();
+		strictCheck();
 		System.out.println(output);
 	}
 
 	public static void println(boolean output){
-        strictCheck();
+		strictCheck();
 		System.out.println(output);
 	}
 
 	public static void println(char output){
-        strictCheck();
+		strictCheck();
 		System.out.println(output);
 	}
 
@@ -81,61 +81,61 @@ public class Magic {
 	// Input Methods
 	private static Scanner scan = new Scanner(System.in); 
 	public static int nextInt(){
-        strictCheck();
+		strictCheck();
 		int rtn = scan.nextInt();
 		scan.nextLine();
 		return rtn;
 	}
 
 	public static double nextDouble(){
-        strictCheck();
+		strictCheck();
 		double rtn = scan.nextDouble();
 		scan.nextLine();
 		return rtn;
 	}
 
 	public static float nextFloat(){
-        strictCheck();
+		strictCheck();
 		float rtn = scan.nextFloat();
 		scan.nextLine();
 		return rtn;
 	}
 
 	public static long nextLong(){
-        strictCheck();
+		strictCheck();
 		long rtn = scan.nextLong();
 		scan.nextLine();
 		return rtn;
 	}
 
 	public static short nextShort(){
-        strictCheck();
+		strictCheck();
 		short rtn = scan.nextShort();
 		scan.nextLine();
 		return rtn;
 	}
 
 	public static byte nextByte(){
-        strictCheck();
+		strictCheck();
 		byte rtn = scan.nextByte();
 		scan.nextLine();
 		return rtn;
 	}
 
 	public static boolean nextBoolean(){
-        strictCheck();
+		strictCheck();
 		boolean rtn = scan.nextBoolean();
 		scan.nextLine();
 		return rtn;
 	}
 
 	public static String nextLine(){
-        strictCheck();
+		strictCheck();
 		return scan.nextLine();
 	}
 
 	public static char nextCharacter(){
-        strictCheck();
+		strictCheck();
 		String tmp = scan.next();
 		char rtnChar = tmp.charAt(0);
 		return rtnChar;
@@ -341,6 +341,10 @@ public class Magic {
 		drawOval(x, y, width, height, convertStringToNormalColor(c));
 	}
 
+	public static void drawEmptyOval(int x, int y, int width, int height, String c){
+		drawEmptyOval(x, y, width, height, convertStringToNormalColor(c));
+	}
+
 	public static void drawLine(int startX, int startY, int endX, int endY, String c){
 		drawLine(startX, startY, endX, endY, convertStringToNormalColor(c));
 	}
@@ -370,6 +374,13 @@ public class Magic {
 	public static void drawOval(int x, int y, int width, int height, Color c){
 		startDrawing();
 		MagicPaintObject paintObject = new MagicPaintObject(x,y,width,height,c, MagicObjectType.OVAL);
+		primaryPanel.addObject(paintObject);
+		primaryPanel.updatePanel();
+	}
+
+	public static void drawEmptyOval(int x, int y, int width, int height, Color c){
+		startDrawing();
+		MagicPaintObject paintObject = new MagicPaintObject(x,y,width,height,c, MagicObjectType.EMPTY_OVAL);
 		primaryPanel.addObject(paintObject);
 		primaryPanel.updatePanel();
 	}
@@ -458,7 +469,7 @@ public class Magic {
 		}
 	}
 
-	private enum MagicObjectType {OVAL, LINE, RECTANGLE, EMPTY_RECTANGLE};
+	private enum MagicObjectType {OVAL, LINE, RECTANGLE, EMPTY_RECTANGLE, EMPTY_OVAL};
 
 	private static class MagicImage{
 		private Image myImage;
@@ -516,6 +527,9 @@ public class Magic {
 				break;
 			case EMPTY_RECTANGLE:
 				page.drawRect(upperX, upperY, width, height);
+				break;
+			case EMPTY_OVAL:
+				page.drawOval(upperX, upperY, width, height);
 				break;
 			default:
 				break;
@@ -635,7 +649,7 @@ public class Magic {
     private static boolean shouldUseStrictMood = true;
 
     public static void changeRestrictedMode(boolean newShouldUseStrictMood){
-        shouldUseStrictMood = newShouldUseStrictMood;
+		shouldUseStrictMood = newShouldUseStrictMood;
     }
 
     /**
@@ -644,36 +658,36 @@ public class Magic {
      * If you call it too nested deeper into the call stack, then it will not work
      */
     private static void strictCheck(){
-        if(!shouldUseStrictMood){
-            return;
-        }
+		if(!shouldUseStrictMood){
+		    return;
+		}
 
-        // If a method is called in the main, then it should be 3 levels back and
-        // level 2 should be the name of the method calling this
-        // 0: getStackTrace
-        // 1: strictCheck
-        // 2: name of method
-        // 3: main
-        final int methodNameLevelsBack = 2;
-        final int mainMethodLevelsBack = 3;
+		// If a method is called in the main, then it should be 3 levels back and
+		// level 2 should be the name of the method calling this
+		// 0: getStackTrace
+		// 1: strictCheck
+		// 2: name of method
+		// 3: main
+		final int methodNameLevelsBack = 2;
+		final int mainMethodLevelsBack = 3;
 
 
-        StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
+		StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
 
-        if(stackTraceElements.length<4){
-            System.err.println("Hi Student, inform your teacher there is a bug in Magic.java");
-            System.exit(1);
-        }
+		if(stackTraceElements.length<4){
+		    System.err.println("Hi Student, inform your teacher there is a bug in Magic.java");
+		    System.exit(1);
+		}
 
-        String methodName = stackTraceElements[methodNameLevelsBack].getMethodName();
-        String shouldBeMain =  stackTraceElements[mainMethodLevelsBack].getMethodName();
+		String methodName = stackTraceElements[methodNameLevelsBack].getMethodName();
+		String shouldBeMain =  stackTraceElements[mainMethodLevelsBack].getMethodName();
 
-        if(!shouldBeMain.equalsIgnoreCase("main")){
-            System.err.println("Sorry, you cannot call `"+methodName+"()` outside of `public static void main(String[] args)`");
-            System.err.println("Please rewrite your code. If you need help, ask your professor or a TA");
-            System.err.println("We're quitting now. Goodbye.");
-            System.exit(1);
-        }
+		if(!shouldBeMain.equalsIgnoreCase("main")){
+		    System.err.println("Sorry, you cannot call `"+methodName+"()` outside of `public static void main(String[] args)`");
+		    System.err.println("Please rewrite your code. If you need help, ask your professor or a TA");
+		    System.err.println("We're quitting now. Goodbye.");
+		    System.exit(1);
+		}
 
 
     }
