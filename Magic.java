@@ -247,6 +247,128 @@ public class Magic {
 
 
 
+	public static void drawGraph(int[] data){
+		JFrame graphFrame = new JFrame("Graph Frame");
+		graphFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+		GraphPanel graphPanel = new GraphPanel(data);
+		graphFrame.getContentPane().add(graphPanel);
+		graphPanel.setPreferredSize(new Dimension(800,800));
+		graphPanel.setBackground(Color.white);
+		graphFrame.pack();
+		graphFrame.setVisible(true);
+		graphFrame.repaint();
+
+
+	}
+
+	private static class GraphPanel extends JPanel {
+		private int[] data;
+		public GraphPanel(int[] data){
+			super();
+			this.data = data;
+			this.repaint();
+		}
+
+		public void paintComponent(Graphics page){
+			super.paintComponent(page);
+			page.setColor(Color.white);
+			page.fillRect(0,0,800,800);
+			page.setColor(Color.black);
+			if(data.length == 0 ){
+				page.drawString("No Data", 400,400);
+				return;
+			}
+			int minValue = data[0];
+			int maxValue = data[0];
+			for(int element:data){
+				if(minValue > element){
+					minValue = element;
+				}
+
+				if(maxValue < element){
+					maxValue  = element;
+				}
+			}
+			double range = maxValue - minValue;
+
+
+			String maxString = String.valueOf(maxValue);
+			String minString = String.valueOf(minValue);
+			int maxStringLength = page.getFontMetrics().stringWidth(maxString)+20;
+			int minStringLength = page.getFontMetrics().stringWidth(minString)+20;
+			int fontHeight = page.getFontMetrics().getHeight() + 20;
+			int stringLength = maxStringLength > minStringLength ? maxStringLength : minStringLength;
+
+			final int sep = stringLength > fontHeight ? stringLength : fontHeight;
+			page.drawLine(sep,800-sep,800,800-sep);
+			page.drawLine(sep,800-sep,sep,0);
+
+			int minValueYValue = 800-(sep * 2);
+			int maxValueYValue = sep * 2;
+
+			if(data.length == 1){
+				drawNumber(1,400,800-sep/2, page);
+				final int width = 100;
+				final int height = (800-sep)- maxValueYValue;
+				page.setColor(Color.blue);
+				page.fillRect(400-width/2,maxValueYValue,width,height);
+				vertLabel(data[0],sep/2,maxValueYValue, sep, page);
+			} else {
+				int fullWidth = 800 - sep;
+				int fullHeight = minValueYValue - maxValueYValue;
+
+
+
+				int items = data.length;
+				int spaces = items + 1;
+				int baseSpace = fullWidth/(items*2 + spaces);
+				int currentX = sep + baseSpace;
+				final int barWidth = baseSpace*2;
+				int count = 1;
+				for(int element : data){
+					double scale = (maxValue - element)/range;
+					final int barHeight = (int)(fullHeight*(1.0-scale)) + sep;
+					page.setColor(Color.blue);
+					page.fillRect(currentX,(int)(maxValueYValue + fullHeight*scale),barWidth,barHeight);
+					drawNumber(count, currentX + barWidth/2,800-sep/2,page);
+					count++;
+					currentX += baseSpace*3;
+				}
+
+				final int numberOfLabels = 20;
+				final double labelScale = range/numberOfLabels;
+				for(count = 0; count <= numberOfLabels ; count++){
+
+					vertLabel(minValue + (int)(labelScale*count), sep/2,minValueYValue - (int)( fullHeight*count/(double)numberOfLabels),sep, page);
+				}
+			}
+
+		}
+
+		public static void vertLabel(int value, int x, int y, int sep, Graphics page){
+			page.setColor(Color.black);
+			int line = 10;
+			page.drawLine(sep-(line/2),y,sep+(line/2), y);
+			drawNumber(value,x,y,page);
+		}
+
+		public static void drawNumber(int value, int x, int y, Graphics page){
+			page.setColor(Color.black);
+
+			String str = String.valueOf(value);
+			int width = page.getFontMetrics().stringWidth(String.valueOf(value));
+			int actualX =  x - width/2;
+			int height = page.getFontMetrics().getHeight();
+			int actualY = y + height/4; //The divide by 4 is needed to make this look it correct.
+			page.drawString(str,actualX,actualY);
+
+
+		}
+	}
+
+
+
 	// *** Magic Level 2: Graphics ***
 	public static JFrame frame = new JFrame("Magic Frame");
 	public static MagicPanel primaryPanel= new MagicPanel();
@@ -545,54 +667,6 @@ public class Magic {
 			objectType = objType;
 		}
 
-		/*		public int getHeight(){
-			return height;
-		}
-
-		public int getWidth(){
-			return width;
-		}
-
-		public int getX(){
-			return upperX;
-		}
-
-		public int getY(){
-			return upperY;
-		}
-
-		public MagicObjectType getObjectType(){
-			return objectType;
-		}
-
-		public Color getColor(){
-			return color;
-		}
-
-		public void setHeight(int h){
-			height = h;
-		}
-
-		public void setWidth(int w){
-			width = w;
-		}
-
-		public void setX(int x){
-			upperX = x;
-		}
-
-		public void setY(int y){
-			upperY = y;
-		}
-
-		public void setObjectType(MagicObjectType obj){
-			objectType = obj;
-		}
-
-		public void setColor(Color c){
-			color = c;
-		}
-		 */
 	}
 
 	private static class MagicPanel extends JPanel
