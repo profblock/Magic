@@ -450,76 +450,68 @@ public class Magic {
 		}
 	}
 
-	public static void drawRectangle(int x, int y, int width, int height, String c){
-		drawRectangle(x, y, width, height, convertStringToNormalColor(c));
+	public static int drawRectangle(int x, int y, int width, int height, String c){
+		return drawRectangle(x, y, width, height, convertStringToNormalColor(c));
 	}
 
-	public static void drawEmptyRectangle(int x, int y, int width, int height, String c){
-		drawEmptyRectangle(x, y, width, height, convertStringToNormalColor(c));
+	public static int drawEmptyRectangle(int x, int y, int width, int height, String c){
+		return drawEmptyRectangle(x, y, width, height, convertStringToNormalColor(c));
 	}
 
-
-	public static void drawOval(int x, int y, int width, int height, String c){
-		drawOval(x, y, width, height, convertStringToNormalColor(c));
+	public static int drawOval(int x, int y, int width, int height, String c){
+		return drawOval(x, y, width, height, convertStringToNormalColor(c));
 	}
 
-	public static void drawEmptyOval(int x, int y, int width, int height, String c){
-		drawEmptyOval(x, y, width, height, convertStringToNormalColor(c));
+	public static int drawLine(int startX, int startY, int endX, int endY, String c){
+		return drawLine(startX, startY, endX, endY, convertStringToNormalColor(c));
 	}
 
-	public static void drawLine(int startX, int startY, int endX, int endY, String c){
-		drawLine(startX, startY, endX, endY, convertStringToNormalColor(c));
+	public static int drawRectangle(int x, int y, int width, int height, MagicColor c){
+		return drawRectangle(x, y, width, height, convertMagicToNormalColor(c));
+	}
+	public static int  drawEmptyRectangle(int x, int y, int width, int height, MagicColor c){
+		return drawEmptyRectangle(x, y, width, height, convertMagicToNormalColor(c));
 	}
 
-	public static void drawRectangle(int x, int y, int width, int height, MagicColor c){
-		drawRectangle(x, y, width, height, convertMagicToNormalColor(c));
-	}
-	public static void drawEmptyRectangle(int x, int y, int width, int height, MagicColor c){
-		drawEmptyRectangle(x, y, width, height, convertMagicToNormalColor(c));
-	}
-
-	public static void drawRectangle(int x, int y, int width, int height, Color c){
+	public static int drawRectangle(int x, int y, int width, int height, Color c){
 		startDrawing();
 		MagicPaintObject paintObject = new MagicPaintObject(x,y,width,height,c, MagicObjectType.RECTANGLE);
-		primaryPanel.addObject(paintObject);
+		int id = primaryPanel.addObject(paintObject);
 		primaryPanel.updatePanel();
+		return id;
 	}
 
-	public static void drawEmptyRectangle(int x, int y, int width, int height, Color c){
+	public static int drawEmptyRectangle(int x, int y, int width, int height, Color c){
 		startDrawing();
 		MagicPaintObject paintObject = new MagicPaintObject(x,y,width,height,c, MagicObjectType.EMPTY_RECTANGLE);
-		primaryPanel.addObject(paintObject);
+		int id = primaryPanel.addObject(paintObject);
 		primaryPanel.updatePanel();
+		return id;
 	}
 
 
-	public static void drawOval(int x, int y, int width, int height, Color c){
+	public static int drawOval(int x, int y, int width, int height, Color c){
 		startDrawing();
 		MagicPaintObject paintObject = new MagicPaintObject(x,y,width,height,c, MagicObjectType.OVAL);
-		primaryPanel.addObject(paintObject);
+		int id = primaryPanel.addObject(paintObject);
 		primaryPanel.updatePanel();
+		return id;
 	}
 
-	public static void drawEmptyOval(int x, int y, int width, int height, Color c){
-		startDrawing();
-		MagicPaintObject paintObject = new MagicPaintObject(x,y,width,height,c, MagicObjectType.EMPTY_OVAL);
-		primaryPanel.addObject(paintObject);
-		primaryPanel.updatePanel();
+	public static int drawOval(int x, int y, int width, int height, MagicColor c){
+		return drawOval(x, y, width, height, convertMagicToNormalColor(c));
 	}
 
-	public static void drawOval(int x, int y, int width, int height, MagicColor c){
-		drawOval(x, y, width, height, convertMagicToNormalColor(c));
-	}
-
-	public static void drawLine(int startX, int startY, int endX, int endY, Color c){
+	public static int drawLine(int startX, int startY, int endX, int endY, Color c){
 		startDrawing();
 		MagicPaintObject paintObject = new MagicPaintObject(startX,startY,endX,endY,c, MagicObjectType.LINE);
-		primaryPanel.addObject(paintObject);
+		int id = primaryPanel.addObject(paintObject);
 		primaryPanel.updatePanel();
+		return id;
 	}
 
-	public static void drawLine(int startX, int startY, int endX, int endY, MagicColor c){
-		drawLine(startX, startY, endX, endY, convertMagicToNormalColor(c));
+	public static int drawLine(int startX, int startY, int endX, int endY, MagicColor c){
+		return drawLine(startX, startY, endX, endY, convertMagicToNormalColor(c));
 	}
 
 	public static void updateImages(){
@@ -583,7 +575,11 @@ public class Magic {
 		image4.setPos(x, y);
 	}
 
-
+	public static void moveObject(int x, int y,int id){
+		primaryPanel.moveObject(x,y,id);
+		primaryPanel.updatePanel();
+	}
+	
 	public static void wait(int milliseconds){
 		try{
 			Thread.sleep(milliseconds);
@@ -666,6 +662,11 @@ public class Magic {
 			color = c;
 			objectType = objType;
 		}
+		
+		public void moveObject(int x, int y){
+			upperX = x;
+			upperY = y;
+		}
 
 	}
 
@@ -682,8 +683,19 @@ public class Magic {
 			objectsToDisplay = new ArrayList<MagicPaintObject>();
 		}
 
-		public void addObject(MagicPaintObject paintObject){
+		public void moveObject(int x, int y, int id){
+			if(id >= objectsToDisplay.size()){
+				System.err.println("Error: ID does not exisit");
+				return;
+			}
+
+			objectsToDisplay.get(id).moveObject(x,y);
+		}
+
+		public int addObject(MagicPaintObject paintObject){
+			int ID = objectsToDisplay.size();
 			objectsToDisplay.add(paintObject);
+			return ID;
 		}
 
 		public void paintComponent(Graphics page){
