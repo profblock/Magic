@@ -712,7 +712,7 @@ public class Magic {
 		}
 
 		public void updatePanel(){
-			paintComponent(this.getGraphics());
+			this.repaint();
 		}
 
 		public void updateImages(){
