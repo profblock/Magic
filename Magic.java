@@ -9,9 +9,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-/** 
+/**
  * Magic.Java
- * Version 5.0
+ * Version 6.0
  * @author ablock
  *
  */
@@ -79,7 +79,7 @@ public class Magic {
 	}
 
 	// Input Methods
-	private static Scanner scan = new Scanner(System.in); 
+	private static Scanner scan = new Scanner(System.in);
 	public static int nextInt(){
 		strictCheck();
 		int rtn = scan.nextInt();
@@ -196,7 +196,7 @@ public class Magic {
 			for(int row =0;row<rows;row++){
 				int[] tmpArray = buildArray.get(row);
 				for(int col=0;col<tmpArray.length;col++){
-					rtnArray[row][col] =tmpArray[col]; 
+					rtnArray[row][col] =tmpArray[col];
 				}
 			}
 		}
@@ -395,30 +395,30 @@ public class Magic {
 
 	private static Color convertMagicToNormalColor(MagicColor c){
 		switch (c){
-		case Red:
-			return Color.red;
-		case Blue:
-			return Color.blue;
-		case Green:
-			return Color.green;
-		case White:
-			return Color.white;
-		case Magenta:
-			return Color.magenta;
-		case Cyan:
-			return Color.cyan;
-		case Gray:
-			return Color.gray;
-		case DarkGray:
-			return Color.darkGray;
-		case Black:
-			return Color.black;
-		case Yellow:
-			return Color.yellow;
-		case Pink:
-			return Color.pink;
-		default:
-			return Color.black;
+			case Red:
+				return Color.red;
+			case Blue:
+				return Color.blue;
+			case Green:
+				return Color.green;
+			case White:
+				return Color.white;
+			case Magenta:
+				return Color.magenta;
+			case Cyan:
+				return Color.cyan;
+			case Gray:
+				return Color.gray;
+			case DarkGray:
+				return Color.darkGray;
+			case Black:
+				return Color.black;
+			case Yellow:
+				return Color.yellow;
+			case Pink:
+				return Color.pink;
+			default:
+				return Color.black;
 		}
 	}
 
@@ -579,7 +579,12 @@ public class Magic {
 		primaryPanel.moveObject(x,y,id);
 		primaryPanel.updatePanel();
 	}
-	
+
+	public static void changeDimensions(int width, int height,int id){
+		primaryPanel.changeDimensions(width,height,id);
+		primaryPanel.updatePanel();
+	}
+
 	public static void wait(int milliseconds){
 		try{
 			Thread.sleep(milliseconds);
@@ -629,28 +634,28 @@ public class Magic {
 	private static class MagicPaintObject{
 		private int height, width, upperX, upperY;
 		private Color color;
-		private MagicObjectType objectType; 
+		private MagicObjectType objectType;
 
 		public void draw (Graphics page){
 			page.setColor(color);
 			switch(objectType){
-			case OVAL:
-				page.fillOval(upperX, upperY, width, height);
-				break;
-			case LINE:
-				page.drawLine(upperX, upperY, width, height);
-				break;
-			case RECTANGLE:
-				page.fillRect(upperX, upperY, width, height);
-				break;
-			case EMPTY_RECTANGLE:
-				page.drawRect(upperX, upperY, width, height);
-				break;
-			case EMPTY_OVAL:
-				page.drawOval(upperX, upperY, width, height);
-				break;
-			default:
-				break;
+				case OVAL:
+					page.fillOval(upperX, upperY, width, height);
+					break;
+				case LINE:
+					page.drawLine(upperX, upperY, width, height);
+					break;
+				case RECTANGLE:
+					page.fillRect(upperX, upperY, width, height);
+					break;
+				case EMPTY_RECTANGLE:
+					page.drawRect(upperX, upperY, width, height);
+					break;
+				case EMPTY_OVAL:
+					page.drawOval(upperX, upperY, width, height);
+					break;
+				default:
+					break;
 			}
 		}
 
@@ -662,10 +667,14 @@ public class Magic {
 			color = c;
 			objectType = objType;
 		}
-		
+
 		public void moveObject(int x, int y){
 			upperX = x;
 			upperY = y;
+		}
+		public void changeDimensions(int width, int height){
+			this.width = width;
+			this.height = height;
 		}
 
 	}
@@ -673,7 +682,7 @@ public class Magic {
 	private static class MagicPanel extends JPanel
 	{
 		/**
-		 * 
+		 *
 		 */
 		private static final long serialVersionUID = 1L;
 
@@ -690,6 +699,15 @@ public class Magic {
 			}
 
 			objectsToDisplay.get(id).moveObject(x,y);
+		}
+
+		public void changeDimensions(int width, int height, int id){
+			if(id >= objectsToDisplay.size()){
+				System.err.println("Error: ID does not exisit");
+				return;
+			}
+
+			objectsToDisplay.get(id).changeDimensions(width,height);
 		}
 
 		public int addObject(MagicPaintObject paintObject){
@@ -727,25 +745,25 @@ public class Magic {
 		}
 	}
 
-    /**
-     * As long as this is true, you cannot use the methods in Magic outside of the main method.
-     * You SHOULD NOT change this unless your approved to do so by your professor.
-     * If you do change it, then do so using the method changeRestrictedMode() below.
-     */
-    private static boolean shouldUseStrictMood = true;
+	/**
+	 * As long as this is true, you cannot use the methods in Magic outside of the main method.
+	 * You SHOULD NOT change this unless your approved to do so by your professor.
+	 * If you do change it, then do so using the method changeRestrictedMode() below.
+	 */
+	private static boolean shouldUseStrictMood = true;
 
-    public static void changeRestrictedMode(boolean newShouldUseStrictMood){
+	public static void changeRestrictedMode(boolean newShouldUseStrictMood){
 		shouldUseStrictMood = newShouldUseStrictMood;
-    }
+	}
 
-    /**
-     * Method that checks to see if a method is called only in the main
-     * DO NOT call this method by anything other than something that can be directly used by the student
-     * If you call it too nested deeper into the call stack, then it will not work
-     */
-    private static void strictCheck(){
+	/**
+	 * Method that checks to see if a method is called only in the main
+	 * DO NOT call this method by anything other than something that can be directly used by the student
+	 * If you call it too nested deeper into the call stack, then it will not work
+	 */
+	private static void strictCheck(){
 		if(!shouldUseStrictMood){
-		    return;
+			return;
 		}
 
 		// If a method is called in the main, then it should be 3 levels back and
@@ -761,20 +779,20 @@ public class Magic {
 		StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
 
 		if(stackTraceElements.length<4){
-		    System.err.println("Hi Student, inform your teacher there is a bug in Magic.java");
-		    System.exit(1);
+			System.err.println("Hi Student, inform your teacher there is a bug in Magic.java");
+			System.exit(1);
 		}
 
 		String methodName = stackTraceElements[methodNameLevelsBack].getMethodName();
 		String shouldBeMain =  stackTraceElements[mainMethodLevelsBack].getMethodName();
 
 		if(!shouldBeMain.equalsIgnoreCase("main")){
-		    System.err.println("Sorry, you cannot call `"+methodName+"()` outside of `public static void main(String[] args)`");
-		    System.err.println("Please rewrite your code. If you need help, ask your professor or a TA");
-		    System.err.println("We're quitting now. Goodbye.");
-		    System.exit(1);
+			System.err.println("Sorry, you cannot call `"+methodName+"()` outside of `public static void main(String[] args)`");
+			System.err.println("Please rewrite your code. If you need help, ask your professor or a TA");
+			System.err.println("We're quitting now. Goodbye.");
+			System.exit(1);
 		}
 
 
-    }
+	}
 }
