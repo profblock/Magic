@@ -226,7 +226,6 @@ public class Magic {
 
 			for(int j = 0;j<data.length;j++){
 				String printFile="";
-				System.out.println("j");
 				for(int i =0;i<data[j].length-1;i++){
 					printFile+=data[j][i]+",";
 				}
