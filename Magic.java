@@ -160,7 +160,7 @@ public class Magic {
 			}
 			in.close();
 		} catch (IOException e) {
-			System.out.println("File Read Error");
+			System.out.println("File Read Error: " + fileName);
 		}
 		return rtnArray;
 	}
@@ -188,7 +188,7 @@ public class Magic {
 			}
 			in.close();
 		} catch (IOException e) {
-			System.out.println("File Read Error");
+			System.out.println("File Read Error: " + fileName);
 		}
 		if(buildArray!=null){
 			int rows = buildArray.size();
@@ -216,7 +216,7 @@ public class Magic {
 			writer.println(printFile);
 			writer.close();
 		} catch (IOException e) {
-			System.out.println("File Write Error:"+fileName);
+			System.out.println("File Write Error: " + fileName);
 		}
 	}
 
@@ -240,7 +240,7 @@ public class Magic {
 			}
 			writer.close();
 		} catch (IOException e) {
-			System.out.println("File Write Error:"+fileName);
+			System.out.println("File Write Error: " + fileName);
 		}
 	}
 
