@@ -216,7 +216,7 @@ public class Magic {
 			writer.println(printFile);
 			writer.close();
 		} catch (IOException e) {
-			System.out.println("File write Error");
+			System.out.println("File Write Error:"+fileName);
 		}
 	}
 
@@ -241,7 +241,7 @@ public class Magic {
 			}
 			writer.close();
 		} catch (IOException e) {
-			System.out.println("File write Error");
+			System.out.println("File Write Error:"+fileName);
 		}
 	}
 
