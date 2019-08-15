@@ -462,6 +462,10 @@ public class Magic {
 		return drawOval(x, y, width, height, convertStringToNormalColor(c));
 	}
 
+	public static int drawEmptyOval(int x, int y, int width, int height, String c){
+		return drawEmptyOval(x, y, width, height, convertStringToNormalColor(c));
+	}
+
 	public static int drawLine(int startX, int startY, int endX, int endY, String c){
 		return drawLine(startX, startY, endX, endY, convertStringToNormalColor(c));
 	}
@@ -469,9 +473,11 @@ public class Magic {
 	public static int drawRectangle(int x, int y, int width, int height, MagicColor c){
 		return drawRectangle(x, y, width, height, convertMagicToNormalColor(c));
 	}
+
 	public static int  drawEmptyRectangle(int x, int y, int width, int height, MagicColor c){
 		return drawEmptyRectangle(x, y, width, height, convertMagicToNormalColor(c));
 	}
+
 
 	public static int drawRectangle(int x, int y, int width, int height, Color c){
 		startDrawing();
@@ -500,6 +506,18 @@ public class Magic {
 
 	public static int drawOval(int x, int y, int width, int height, MagicColor c){
 		return drawOval(x, y, width, height, convertMagicToNormalColor(c));
+	}
+
+	public static int drawEmptyOval(int x, int y, int width, int height, Color c){
+		startDrawing();
+		MagicPaintObject paintObject = new MagicPaintObject(x,y,width,height,c, MagicObjectType.EMPTY_OVAL);
+		int id = primaryPanel.addObject(paintObject);
+		primaryPanel.updatePanel();
+		return id;
+	}
+
+	public static int drawEmptyOval(int x, int y, int width, int height, MagicColor c){
+		return drawEmptyOval(x, y, width, height, convertMagicToNormalColor(c));
 	}
 
 	public static int drawLine(int startX, int startY, int endX, int endY, Color c){
