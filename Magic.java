@@ -250,10 +250,11 @@ public class Magic {
 	public static void drawGraph(int[] data){
 		JFrame graphFrame = new JFrame("Graph Frame");
 		graphFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-		GraphPanel graphPanel = new GraphPanel(data);
+		int width=600;
+		int height=600;
+		GraphPanel graphPanel = new GraphPanel(data, width,height);
 		graphFrame.getContentPane().add(graphPanel);
-		graphPanel.setPreferredSize(new Dimension(800,800));
+		graphPanel.setPreferredSize(new Dimension(width,height));
 		graphPanel.setBackground(Color.white);
 		graphFrame.pack();
 		graphFrame.setVisible(true);
@@ -264,8 +265,16 @@ public class Magic {
 
 	private static class GraphPanel extends JPanel {
 		private int[] data;
-		public GraphPanel(int[] data){
+		private int width;
+		private int height;
+		private int halfWidth;
+		private int halfHeight;
+		public GraphPanel(int[] data, int width, int height){
 			super();
+			this.width = width;
+			this.height = height;
+			this.halfHeight = this.height/2;
+			this.halfWidth = halfHeight/2;
 			this.data = data;
 			this.repaint();
 		}
@@ -273,10 +282,10 @@ public class Magic {
 		public void paintComponent(Graphics page){
 			super.paintComponent(page);
 			page.setColor(Color.white);
-			page.fillRect(0,0,800,800);
+			page.fillRect(0,0,width,height);
 			page.setColor(Color.black);
 			if(data.length == 0 ){
-				page.drawString("No Data", 400,400);
+				page.drawString("No Data", halfHeight,halfWidth);
 				return;
 			}
 			int minValue = data[0];
@@ -301,21 +310,21 @@ public class Magic {
 			int stringLength = maxStringLength > minStringLength ? maxStringLength : minStringLength;
 
 			final int sep = stringLength > fontHeight ? stringLength : fontHeight;
-			page.drawLine(sep,800-sep,800,800-sep);
-			page.drawLine(sep,800-sep,sep,0);
+			page.drawLine(sep,height-sep,width,height-sep);
+			page.drawLine(sep,height-sep,sep,0);
 
-			int minValueYValue = 800-(sep * 2);
+			int minValueYValue = height-(sep * 2);
 			int maxValueYValue = sep * 2;
 
 			if(data.length == 1){
-				drawNumber(1,400,800-sep/2, page);
+				drawNumber(1,halfWidth,height-sep/2, page);
 				final int width = 100;
-				final int height = (800-sep)- maxValueYValue;
+				final int height = (this.height-sep)- maxValueYValue;
 				page.setColor(Color.blue);
-				page.fillRect(400-width/2,maxValueYValue,width,height);
+				page.fillRect(halfWidth-width/2,maxValueYValue,width,height);
 				vertLabel(data[0],sep/2,maxValueYValue, sep, page);
 			} else {
-				int fullWidth = 800 - sep;
+				int fullWidth = width - sep;
 				int fullHeight = minValueYValue - maxValueYValue;
 
 
@@ -331,7 +340,7 @@ public class Magic {
 					final int barHeight = (int)(fullHeight*(1.0-scale)) + sep;
 					page.setColor(Color.blue);
 					page.fillRect(currentX,(int)(maxValueYValue + fullHeight*scale),barWidth,barHeight);
-					drawNumber(count, currentX + barWidth/2,800-sep/2,page);
+					drawNumber(count, currentX + barWidth/2,height-sep/2,page);
 					count++;
 					currentX += baseSpace*3;
 				}
