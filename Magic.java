@@ -392,6 +392,7 @@ public class Magic {
 
 	private static void startDrawing(){
 		if(!startedDrawing){
+			frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 			frame.getContentPane().add(primaryPanel);
 			primaryPanel.setPreferredSize(new Dimension(800,600));
 			primaryPanel.setBackground(Color.white);
