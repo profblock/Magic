@@ -11,7 +11,7 @@ import java.io.PrintWriter;
 
 /**
  * Magic.Java
- * Version 6.1
+ * Version 6.3
  * @author ablock
  *
  */
@@ -459,6 +459,30 @@ public class Magic {
         }
     }
 
+
+    public static int drawRectangle(int x, int y, int width, int height, int red, int green, int blue){
+
+        return drawRectangle(x, y, width, height, new Color(red,green,blue));
+    }
+
+    public static int drawEmptyRectangle(int x, int y, int width, int height,  int red, int green, int blue){
+        return drawEmptyRectangle(x, y, width, height, new Color(red,green,blue));
+    }
+
+    public static int drawOval(int x, int y, int width, int height, int red, int green, int blue){
+        return drawOval(x, y, width, height, new Color(red,green,blue));
+    }
+
+    public static int drawEmptyOval(int x, int y, int width, int height,int red, int green, int blue){
+        return drawEmptyOval(x, y, width, height, new Color(red,green,blue));
+    }
+
+    public static int drawLine(int startX, int startY, int endX, int endY, int red, int green, int blue){
+        return drawLine(startX, startY, endX, endY, new Color(red,green,blue));
+    }
+
+
+
     public static int drawRectangle(int x, int y, int width, int height, String c){
         return drawRectangle(x, y, width, height, convertStringToNormalColor(c));
     }
@@ -607,6 +631,12 @@ public class Magic {
         primaryPanel.updatePanel();
     }
 
+    public static void changeColor(Color newColor,int id){
+        primaryPanel.changeColor(newColor,id);
+
+        primaryPanel.updatePanel();
+    }
+
     public static void changeDimensions(int width, int height,int id){
         primaryPanel.changeDimensions(width,height,id);
         primaryPanel.updatePanel();
@@ -711,6 +741,10 @@ public class Magic {
             this.height = height;
         }
 
+        public void changeColor(Color newColor){
+            this.color = newColor;
+        }
+
     }
 
     private static class MagicPanel extends JPanel
@@ -735,6 +769,15 @@ public class Magic {
             objectsToDisplay.get(id).moveObject(x,y);
         }
 
+
+        public void changeColor(Color newColor, int id){
+            if(id >= objectsToDisplay.size()){
+                System.err.println("Error: ID does not exisit");
+                return;
+            }
+
+            objectsToDisplay.get(id).changeColor(newColor);
+        }
         public void changeDimensions(int width, int height, int id){
             if(id >= objectsToDisplay.size()){
                 System.err.println("Error: ID does not exisit");
