@@ -144,6 +144,23 @@ public class Magic {
     public static boolean fileExists(String fileName){
         return (new File(fileName)).isFile();
     }
+    
+    public static String readFile(String fileName) {
+    	String rtn = "";
+        try {
+            BufferedReader in = new BufferedReader(new FileReader(fileName));
+            String str;
+            str = in.readLine();
+            while (str!=null){
+            	rtn+=str+"\n";
+            	str = in.readLine();
+            }
+            in.close();
+        } catch (IOException e) {
+            System.out.println("File Read Error: " + fileName);
+        }
+        return rtn;
+    }
 
     public static int[] simpleIntFileRead(String fileName){
         int[] rtnArray=null;
