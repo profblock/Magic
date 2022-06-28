@@ -11,7 +11,7 @@ import java.io.PrintWriter;
 
 /**
  * Magic.Java
- * Version 6.3.2
+ * Version 6.4.1
  * @author ablock
  *
  */
@@ -160,6 +160,16 @@ public class Magic {
             System.out.println("File Read Error: " + fileName);
         }
         return rtn;
+    }
+    
+    public static void writeFile(String fileName, String data){
+        try{
+            PrintWriter writer = new PrintWriter(fileName, "UTF-8");
+            writer.print(data);
+            writer.close();
+        } catch (IOException e) {
+            System.out.println("File Write Error: " + fileName);
+        }
     }
 
     public static int[] simpleIntFileRead(String fileName){
