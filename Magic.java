@@ -11,7 +11,7 @@ import java.io.PrintWriter;
 
 /**
  * Magic.Java
- * Version 6.3
+ * Version 6.3.1
  * @author ablock
  *
  */
